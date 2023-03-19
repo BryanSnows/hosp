@@ -1,17 +1,16 @@
+
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
-import { SwaggerModule } from '@nestjs/swagger';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { SwaggerModule } from './config/swagger/swagger.module';
+import { ConfigModule } from './config/environments/config.module';
 import { DatabaseModule } from './config/database/database.module';
 
 @Module({
   imports: [
-    DatabaseModule,
+    SwaggerModule,
     ConfigModule,
-    SwaggerModule
+    DatabaseModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
+
+  providers: [ ]
 })
-export class AppModule {}
+export class AppModule { }
