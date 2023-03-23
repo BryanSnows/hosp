@@ -12,7 +12,7 @@ export class ProfileService {
     ) { }
 
 
-    async create(createProfileDto: CreateProfileDto){
+    async create(createProfileDto: CreateProfileDto): Promise<ProfileEntity>{
         const {profile_name} = createProfileDto
 
         if (profile_name.trim() == '' || profile_name == undefined) {

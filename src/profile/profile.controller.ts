@@ -1,6 +1,7 @@
 import { Body, Controller, Post } from "@nestjs/common";
 import { ApiTags } from "@nestjs/swagger";
 import { CreateProfileDto } from "./dto/create-profile.dto";
+import { ProfileEntity } from "./entities/profile.entity";
 import { ProfileService } from "./profile.service";
 
 @Controller('profile')
@@ -11,7 +12,7 @@ export class ProfileController {
 
 
     @Post()
-    async create(@Body() createProfileDto: CreateProfileDto){
+    async create(@Body() createProfileDto: CreateProfileDto): Promise<ProfileEntity>{
         return this.profileService.create(createProfileDto)
     }
 }
