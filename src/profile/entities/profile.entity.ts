@@ -1,6 +1,6 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
-@Entity('Profile')
+@Entity('PROFILE')
 export class ProfileEntity {
 
   @PrimaryGeneratedColumn()
@@ -9,5 +9,5 @@ export class ProfileEntity {
   @Column()
   profile_name: string;
 
-  
+
 }

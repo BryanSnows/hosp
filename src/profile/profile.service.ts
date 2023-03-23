@@ -8,8 +8,8 @@ import { ProfileEntity } from "./entities/profile.entity";
 export class ProfileService {
     constructor(
         @InjectRepository(ProfileEntity)
-        private readonly profileRepository:  Repository<ProfileEntity>,
-    ){}
+        private readonly profileRepository: Repository<ProfileEntity>,
+    ) { }
 
 
     async create(createProfileDto: CreateProfileDto){
@@ -18,5 +18,11 @@ export class ProfileService {
         if (profile_name.trim() == '' || profile_name == undefined) {
             throw new BadRequestException('O campo não pode estar vazio')
         }
+
+        const profile = this.profileRepository.create(createProfileDto);
+
+        const profileSave = await this.profileRepository.save(profile);
+
+        return profileSave;
     }
 }
