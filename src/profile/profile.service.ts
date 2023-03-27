@@ -25,4 +25,10 @@ export class ProfileService {
 
         return profileSave;
     }
+
+    async getAll() {
+        return await this.profileRepository.find()
+    }
+
+
 }

@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from "@nestjs/common";
+import { Body, Controller, Get, Post } from "@nestjs/common";
 import { ApiTags } from "@nestjs/swagger";
 import { CreateProfileDto } from "./dto/create-profile.dto";
 import { ProfileEntity } from "./entities/profile.entity";
@@ -14,5 +14,10 @@ export class ProfileController {
     @Post()
     async create(@Body() createProfileDto: CreateProfileDto): Promise<ProfileEntity>{
         return this.profileService.create(createProfileDto)
+    }
+
+    @Get()
+    async getAll() {
+        return this.profileService.getAll()
     }
 }
