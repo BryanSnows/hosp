@@ -1,4 +1,6 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { ProfileEntity } from "src/profile/entities/profile.entity";
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn, JoinColumn } from "typeorm";
+import { BitToBooleanTransformer } from '../../config/database/transformers/bit-to-boolean.transformer';
 @Entity("USER")
 export class UserEntity {
 
@@ -11,10 +13,18 @@ export class UserEntity {
     @Column()
     user_password: string;
 
-    @Column()
+    @Column({
+        type: 'bit',
+        transformer: new BitToBooleanTransformer(),
+    })
+
     user_status: boolean;
 
-    @Column()
+    @Column({
+        type: 'bit',
+        transformer: new BitToBooleanTransformer(),
+    })
+
     user_first_access: boolean;
 
     @Column()
@@ -26,7 +36,16 @@ export class UserEntity {
     @Column()
     user_enrollment: string;
 
-    @Column()
+    @Column({
+        type: 'bit',
+        transformer: new BitToBooleanTransformer(),
+    })
     user_password_status: boolean;
+
+    @ManyToOne(() => ProfileEntity, (profile) => profile.users)
+    @JoinColumn({ name: 'user_profile_id' })
+    profile: ProfileEntity
+
+
     
 }

@@ -1,3 +1,5 @@
+import { ProfileEntity } from "src/profile/entities/profile.entity";
+import { UserEntity } from "src/user/entities/user.entity";
 
 export default () => ({
     application: {
@@ -24,7 +26,7 @@ export default () => ({
         password: process.env.DB_PASSWORD,
         database: process.env.DB_DATABASE,
         schema:`${process.env.DB_DATABASE}.public`,
-        entities: ['dist/**/*.entity{.ts,.js}'],
+        entities: [UserEntity, ProfileEntity],
         synchronize: false,
         extra: {
             trustServerCertificate: true,
