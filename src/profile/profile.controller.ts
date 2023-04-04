@@ -1,8 +1,9 @@
-import { Body, Controller, Get, Post } from "@nestjs/common";
+import { Body, Controller, Get, Param, Post, Put } from "@nestjs/common";
 import { ApiTags } from "@nestjs/swagger";
 import { CreateProfileDto } from "./dto/create-profile.dto";
 import { ProfileEntity } from "./entities/profile.entity";
 import { ProfileService } from "./profile.service";
+import { UpdateProfileDto } from "./dto/update-profile.dto";
 
 @Controller('profile')
 @ApiTags('Profile')
@@ -13,11 +14,18 @@ export class ProfileController {
 
     @Post()
     async create(@Body() createProfileDto: CreateProfileDto): Promise<ProfileEntity>{
-        return this.profileService.create(createProfileDto)
+        return await this.profileService.create(createProfileDto)
     }
 
     @Get()
     async getAll() {
-        return this.profileService.getAll()
+        return await this.profileService.getAll()
     }
+
+    @Put(':id')
+    update(@Param('id')id: number, @Body() updateProfileDto: UpdateProfileDto): Promise<ProfileEntity> {
+        return this.profileService.update(+id, updateProfileDto)
+      }
+    
+
 }
