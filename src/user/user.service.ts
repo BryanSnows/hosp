@@ -9,6 +9,11 @@ export class UserService {
             private readonly userRepository: Repository<UserEntity>,
     ) { }
 
+
+    async create(){
+
+    }
+
     async getAll() {
         return await this.userRepository.find();
     }
