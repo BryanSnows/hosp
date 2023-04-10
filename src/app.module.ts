@@ -11,8 +11,8 @@ import { UserModule } from './user/user.module';
     SwaggerModule,
     ConfigModule,
     DatabaseModule,
+    UserModule,
     ProfileModule,
-    UserModule
   ],
 
   providers: [ ]
