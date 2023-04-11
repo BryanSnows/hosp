@@ -1,8 +1,10 @@
-import { Body, Controller, Get, Post } from "@nestjs/common";
+import { Body, Controller, Get, Post, Query } from "@nestjs/common";
 import { ApiOperation, ApiTags } from "@nestjs/swagger";
 import { UserService } from "./user.service";
 import { UserCreateDto } from "./dto/create-user.dto";
 import { UserEntity } from "./entities/user.entity";
+import { Pagination } from "nestjs-typeorm-paginate";
+import { FilterUser } from "./dto/filter-userr.dto";
 
 @Controller('user')
 @ApiTags('User')
@@ -24,8 +26,8 @@ export class UserController {
         summary: 'Find All Users'
     })
     @Get()
-    async getAll(): Promise<UserEntity[]>{
-        return await this.userService.getAll()
+    async getAll(@Query() filter: FilterUser): Promise<Pagination<UserEntity>>{
+        return await this.userService.getAll(filter)
     }
     
 }

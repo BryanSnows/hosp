@@ -4,6 +4,8 @@ import { UserEntity } from "./entities/user.entity";
 import { Repository } from 'typeorm';
 import { UserCreateDto } from "./dto/create-user.dto";
 import { ProfileEntity } from "src/profile/entities/profile.entity";
+import { paginate, Pagination } from 'nestjs-typeorm-paginate';
+import { FilterUser } from "./dto/filter-userr.dto";
 @Injectable()
 export class UserService {
     constructor(
@@ -67,9 +69,27 @@ export class UserService {
         return userSave
     }
 
-    async getAll(): Promise<UserEntity[]>{
+    async getAll(filter: FilterUser): Promise<any |Pagination<UserEntity>> {
+        const { user_id, search_name } = filter
+        const queryBuilder = this.userRepository.createQueryBuilder('user')
+        .leftJoinAndSelect('user.profile', 'profile')
 
-        return await this.userRepository.find();
+        if (user_id) {
+            queryBuilder
+            .andWhere('user.user_id = :user_id', {user_id})
+        }
+
+        if (search_name) {
+            queryBuilder
+            .andWhere('user.user_name ilike :user_name', {user_name: `%${search_name}%`})
+        }
+        
+
+        filter.limit = filter.limit ?? (await queryBuilder.getMany()).length;
+
+        let {items, meta} = await paginate<UserEntity>(queryBuilder, filter);
+        
+        return meta.totalItems === 0 ?  { message: 'Sem dados Cadastrados', items, meta } : await paginate<UserEntity>(queryBuilder, filter);
         
     }
 
