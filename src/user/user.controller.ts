@@ -4,7 +4,7 @@ import { UserService } from "./user.service";
 import { UserCreateDto } from "./dto/create-user.dto";
 import { UserEntity } from "./entities/user.entity";
 import { Pagination } from "nestjs-typeorm-paginate";
-import { FilterUser } from "./dto/filter-userr.dto";
+import { FilterUser } from "./dto/filter-user.dto";
 
 @Controller('user')
 @ApiTags('User')

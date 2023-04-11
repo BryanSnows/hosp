@@ -5,7 +5,7 @@ import { Repository } from 'typeorm';
 import { UserCreateDto } from "./dto/create-user.dto";
 import { ProfileEntity } from "src/profile/entities/profile.entity";
 import { paginate, Pagination } from 'nestjs-typeorm-paginate';
-import { FilterUser } from "./dto/filter-userr.dto";
+import { FilterUser } from "./dto/filter-user.dto";
 @Injectable()
 export class UserService {
     constructor(
