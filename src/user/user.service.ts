@@ -6,6 +6,10 @@ import { UserCreateDto } from "./dto/create-user.dto";
 import { ProfileEntity } from "src/profile/entities/profile.entity";
 import { paginate, Pagination } from 'nestjs-typeorm-paginate';
 import { FilterUser } from "./dto/filter-user.dto";
+import { Validations } from "src/common/validations";
+import { ObjectSize, ValidType } from "src/common/Enums";
+import { ChangePasswordDto } from "src/auth/dto/change-password.dto";
+import { hash } from "src/common/hash";
 @Injectable()
 export class UserService {
     constructor(
@@ -30,6 +34,64 @@ export class UserService {
                 where: {profile_id: id}
             }
         )
+    }
+
+//for auth 
+     
+  async findById(id: number): Promise<UserEntity> {
+    Validations.getInstance().validateWithRegex(
+      `${id}`,
+      ValidType.IS_NUMBER
+    )
+    if (id > ObjectSize.INTEGER) {
+      throw new BadRequestException(`Número de id inválido`)
+    }
+
+    return this.userRepository.createQueryBuilder('user')
+      .leftJoinAndSelect('user.profile', 'profile')
+      .leftJoinAndSelect('user.office', 'office')
+      .leftJoinAndSelect('user.shift', 'shift')
+      .where('user.user_id = :user_id', { user_id: id })
+      .getOne()
+    }
+
+    async changePassword(changePasswordDto: ChangePasswordDto) {
+        const userSaved = await this.findByEnrollment(changePasswordDto.enrollment);
+
+        if (!userSaved) {
+            throw new NotFoundException('Usuário não cadastrado!');
+        }
+
+        const newHashedPassword = await hash(changePasswordDto.new_password);
+
+        userSaved.user_password = newHashedPassword;
+        // userSaved.user_first_access = false;
+
+        return this.userRepository.save(userSaved);
+    }
+
+
+    async updateRefreshToken(id: number, refresh_token: string){
+
+        Validations.getInstance().validateWithRegex(
+            `${id}`,
+            ValidType.IS_NUMBER
+        )
+
+        if (id > ObjectSize.INTEGER) {
+            throw new BadRequestException(`Numero de id Invalido`)
+        }
+
+        const user = await this.findById(id)
+
+        if (!user) {
+            throw new BadRequestException(`Usuario com id ${id} não existe`)
+        }
+
+        user.user_refresh_token = refresh_token
+
+        await this.userRepository.save(user)
+  
     }
 
 
