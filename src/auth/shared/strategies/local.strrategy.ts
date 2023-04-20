@@ -17,23 +17,10 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
 
     async validate(enrollment: string, password: string): Promise<any> {
         const user = await this.authService.validateUser(enrollment, password);
-        const userFirst =  await this.userService.findByEnrollment(enrollment)
 
-        // if (!user && userFirst.user_status === false) {
-        //     throw new BadRequestException(`Usuário desativado!`)
-        // } else {
-        //     if (!user && userFirst.user_first_access === false  && userFirst.user_password_status === true) {
-        //         throw new UnauthorizedException(`Usuário inválido!`);
-        //     } else 
-            
-        //     if (!user && userFirst.user_first_access === true){
-        //         throw new GoneException(`Senha de primeiro acesso inválida`);
-        //     }
-    
-        //     if (!user && userFirst.user_password_status === false) {
-        //         throw new NotFoundException(`Usuário bloqueado! Entre em contato com o Administrador.`);
-        //     }
-        // }
+        if (!user) {
+            throw new UnauthorizedException(`Password is wrong`)
+        }
 
         return user;
     }

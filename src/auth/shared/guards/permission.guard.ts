@@ -1,26 +1,19 @@
 import { CanActivate, ExecutionContext, mixin, Type } from '@nestjs/common';
 import { isArray } from 'class-validator';
- 
 export function PermissionGuard (permission: any): Type<CanActivate> {
   class PermissionGuardMixin implements CanActivate {
 
     async canActivate(context: ExecutionContext) {
-      
       const request = context.switchToHttp().getRequest<any>();
+      const profile: number = request?.user?.profile;
 
-      if (request?.user?.profile_id === 1) {
-        return true;
-      }
-      
-      const transactions = request?.user?.transactions;
+    if (isArray(permission)) {
 
-      if (isArray(permission)) {
-        return transactions?.some((transaction: number) => permission?.includes(transaction));
-      }
+        return permission?.includes(profile)
 
-      return transactions?.includes(permission);
+    }
+      return permission === profile;
     }
   }
- 
   return mixin(PermissionGuardMixin);
 }

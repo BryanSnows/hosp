@@ -11,12 +11,12 @@ import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
+    AuthModule,
     SwaggerModule,
     ConfigModule,
     DatabaseModule,
     UserModule,
     ProfileModule,
-    AuthModule,
   ],
 
   providers: [

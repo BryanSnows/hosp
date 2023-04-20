@@ -28,6 +28,14 @@ export class UserService {
        )
     }
 
+
+    async findByEnrollmentAndProfile(user_enrollment:string){
+        return this.userRepository.createQueryBuilder('user')
+        .leftJoinAndSelect('user.profile', 'profile')
+        .where('user.user_enrollment = :user_enrollment', {user_enrollment: user_enrollment})
+        .getOne()
+    }
+
     async FindByProfile(id: number): Promise<ProfileEntity> {
         return await this.profileRepository.findOne(
             {

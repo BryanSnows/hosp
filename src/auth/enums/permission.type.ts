@@ -1,7 +1,10 @@
-import { UserTransaction } from "./transactions/user.transaction"
+const DEFAULT_ADMIN_VALUE = "Gerente";
+const DEFAULT_USER_VALUE = "Usúario";
 
-let Permission ={
-    User: UserTransaction,
+let AccessProfile = {
+    USER:  DEFAULT_USER_VALUE,
+    USER_AND_ADMIN: [DEFAULT_ADMIN_VALUE, DEFAULT_USER_VALUE],
+    ADMIN: [DEFAULT_ADMIN_VALUE]
 }
 
-export default Permission
+export default AccessProfile

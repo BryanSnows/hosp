@@ -1,14 +1,17 @@
-import { Body, Controller, Get, Post, Query } from "@nestjs/common";
-import { ApiOperation, ApiTags } from "@nestjs/swagger";
+import { Body, Controller, Get, Post, Query, UseGuards } from "@nestjs/common";
+import { ApiBearerAuth, ApiOperation, ApiTags } from "@nestjs/swagger";
 import { UserService } from "./user.service";
 import { UserCreateDto } from "./dto/create-user.dto";
 import { UserEntity } from "./entities/user.entity";
 import { Pagination } from "nestjs-typeorm-paginate";
 import { FilterUser } from "./dto/filter-user.dto";
 import { PublicRoute } from "src/common/decorators/public_route.decorator";
+import { PermissionGuard } from "src/auth/shared/guards/permission.guard";
+import AccessProfile from "src/auth/enums/permission.type";
 
 @Controller('user')
 @ApiTags('User')
+@ApiBearerAuth()
 
 export class UserController {
     constructor(private readonly userService: UserService) { }
@@ -27,7 +30,7 @@ export class UserController {
     @ApiOperation({
         summary: 'Find All Users'
     })
-    @PublicRoute()
+    @UseGuards(PermissionGuard(AccessProfile.USER))
     @Get()
     async getAll(@Query() filter: FilterUser): Promise<Pagination<UserEntity>>{
         return await this.userService.getAll(filter)
