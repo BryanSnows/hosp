@@ -30,7 +30,7 @@ export class UserController {
     @ApiOperation({
         summary: 'Find All Users'
     })
-    @UseGuards(PermissionGuard(AccessProfile.USER))
+    @UseGuards(PermissionGuard(AccessProfile.ADMIN))
     @Get()
     async getAll(@Query() filter: FilterUser): Promise<Pagination<UserEntity>>{
         return await this.userService.getAll(filter)

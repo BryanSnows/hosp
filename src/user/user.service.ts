@@ -3,13 +3,13 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { UserEntity } from "./entities/user.entity";
 import { Repository } from 'typeorm';
 import { UserCreateDto } from "./dto/create-user.dto";
-import { ProfileEntity } from "src/profile/entities/profile.entity";
 import { paginate, Pagination } from 'nestjs-typeorm-paginate';
 import { FilterUser } from "./dto/filter-user.dto";
 import { Validations } from "src/common/validations";
 import { ObjectSize, ValidType } from "src/common/Enums";
 import { ChangePasswordDto } from "src/auth/dto/change-password.dto";
 import { hash } from "src/common/hash";
+import { ProfileEntity } from "./entities/profile.entity";
 @Injectable()
 export class UserService {
     constructor(
@@ -121,6 +121,10 @@ export class UserService {
 
 
         let user = this.userRepository.create(userCreateDto)
+
+        user.user_first_access = false;
+        user.user_password_status = true;
+        user.user_status =  true;
 
         let profileIsRegistered = await this.FindByProfile(user.user_profile_id)
 
