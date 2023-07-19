@@ -8,6 +8,7 @@ import { FilterUser } from "./dto/filter-user.dto";
 import { PublicRoute } from "src/common/decorators/public_route.decorator";
 import { PermissionGuard } from "src/auth/shared/guards/permission.guard";
 import AccessProfile from "src/auth/enums/permission.type";
+import Permission from "src/auth/enums/permission.type";
 
 @Controller('user')
 @ApiTags('User')
@@ -30,7 +31,7 @@ export class UserController {
     @ApiOperation({
         summary: 'Find All Users'
     })
-    @UseGuards(PermissionGuard(AccessProfile.ADMIN))
+    @UseGuards(PermissionGuard(Permission.User.READ))
     @Get()
     async getAll(@Query() filter: FilterUser): Promise<Pagination<UserEntity>>{
         return await this.userService.getAll(filter)

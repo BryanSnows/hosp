@@ -22,7 +22,7 @@ export class JwtRefreshStrategy extends PassportStrategy(Strategy, 'jwt-refresh'
     async validate(@Request() request: Request, payload: any): Promise<any> {
         const refresh_token = request.headers['authorization'].replace('Bearer', '').trim();
         return {
-            id: payload.sub,
+            enrollment: payload.enrollment,
             refresh_token
         };
     }

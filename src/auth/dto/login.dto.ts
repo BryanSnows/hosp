@@ -3,10 +3,14 @@ import { ApiProperty } from "@nestjs/swagger"
 
 export class LoginDTO{
 
-    @ApiProperty()
+    @ApiProperty({
+        example: "000000"
+    })
     enrollment: string
 
-    @ApiProperty()
+    @ApiProperty({
+        example: "hosp@2023"
+    })
     password: string
 
 }

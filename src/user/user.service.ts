@@ -9,7 +9,8 @@ import { Validations } from "src/common/validations";
 import { ObjectSize, ValidType } from "src/common/Enums";
 import { ChangePasswordDto } from "src/auth/dto/change-password.dto";
 import { hash } from "src/common/hash";
-import { ProfileEntity } from "./entities/profile.entity";
+import { ProfileEntity } from "src/access-control/entities/profile.entity";
+
 @Injectable()
 export class UserService {
     constructor(
@@ -20,13 +21,13 @@ export class UserService {
     ) { }
 
 
-    async findByEnrollment(user_enrollment:string): Promise<UserEntity>{
-       return await this.userRepository.findOne(
-        {
-            where: {user_enrollment: user_enrollment}
-        }
-       )
-    }
+    async findByEnrollment(user_enrollment: string) {
+        return this.userRepository.createQueryBuilder('user')
+          .leftJoinAndSelect('user.profile', 'profile')
+          .leftJoinAndSelect('profile.transactions', 'transactions')
+          .where('user.user_enrollment = :user_enrollment', { user_enrollment: user_enrollment })
+          .getOne()
+      }
 
 
     async findByEnrollmentAndProfile(user_enrollment:string){
@@ -73,7 +74,7 @@ export class UserService {
         const newHashedPassword = await hash(changePasswordDto.new_password);
 
         userSaved.user_password = newHashedPassword;
-        // userSaved.user_first_access = false;
+        userSaved.user_first_access = false;
 
         return this.userRepository.save(userSaved);
     }

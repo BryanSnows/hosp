@@ -1,10 +1,11 @@
-const DEFAULT_ADMIN_VALUE = "Gerente";
-const DEFAULT_USER_VALUE = "Usúario";
 
-let AccessProfile = {
-    USER:  DEFAULT_USER_VALUE,
-    USER_AND_ADMIN: [DEFAULT_ADMIN_VALUE, DEFAULT_USER_VALUE],
-    ADMIN: [DEFAULT_ADMIN_VALUE]
+import { UserTransaction } from "./transactions/user.transaction";
+import { AccessControlTransaction } from "./transactions/access-control.transaction";
+
+
+let Permission = {
+    User: UserTransaction,
+    AccessControl: AccessControlTransaction
 }
 
-export default AccessProfile
+export default Permission;

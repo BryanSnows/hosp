@@ -1,11 +1,9 @@
 import { Controller, Post, Body, Request, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { PublicRoute } from 'src/common/decorators/public_route.decorator';
-// import { FirstAccessDto } from './dto/first-access.dto';
 import { LoginDTO } from './dto/login.dto';
 import { AuthService } from './shared/auth.service';
 import { JwtAuthGuard } from './shared/guards/jwt-auth.guard';
-import { JwtFirstAccessAuthGuard } from './shared/guards/jwt-first-access.guard';
 import { JwtRefreshAuthGuard } from './shared/guards/jwt-refresh-auth.guard';
 import { LocalAuthGuard } from './shared/guards/local-auth.guard';
 
@@ -20,7 +18,7 @@ export class AuthController {
 
     @Post('/login')
     @PublicRoute()
-    // @UseGuards(LocalAuthGuard)
+    @UseGuards(LocalAuthGuard)
     async auth(@Body() auth: LoginDTO) {
         return this.authService.login(auth);
     }
@@ -35,7 +33,7 @@ export class AuthController {
     @Post('/refresh_token')
     @ApiBearerAuth()
     @PublicRoute()
-    // @UseGuards(JwtRefreshAuthGuard)
+    @UseGuards(JwtRefreshAuthGuard)
     async refreshToken(@Request() payload: any) {
         return this.authService.refreshToken(payload.user_enrollment, payload.user_refresh_token);
     }

@@ -1,7 +1,8 @@
 
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn, JoinColumn } from "typeorm";
 import { BitToBooleanTransformer } from '../../config/database/transformers/bit-to-boolean.transformer';
-import { ProfileEntity } from "./profile.entity";
+import { ProfileEntity } from "src/access-control/entities/profile.entity";
+
 @Entity("USER")
 export class UserEntity {
 
